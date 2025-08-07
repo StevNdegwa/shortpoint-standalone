@@ -15,7 +15,7 @@ import {
 
 const adminNavItems = [
   { 
-    href: '/admin', 
+    href: '/admin/sites', 
     label: 'Sites',
     icon: Building2,
     description: 'Manage all sites'
@@ -55,7 +55,10 @@ export function AdminSidebar() {
         <nav className="space-y-4">
           {adminNavItems.map((item) => {
             const Icon = item.icon
-            const isActive = pathname === item.href || pathname.startsWith(item.href + '/')
+            // More specific active detection
+            const isActive = pathname === item.href || 
+                           (item.href === '/admin/sites' && pathname === '/admin') ||
+                           pathname.startsWith(item.href + '/')
 
             return (
               <Link
