@@ -92,7 +92,7 @@ Open [http://localhost:3000](http://localhost:3000) to view the application.
 ```
 src/
 ├── app/                    # Next.js App Router pages
-│   ├── dashboard/         # Dashboard pages
+│   ├── admin/         # Admin pages
 │   ├── sites/            # Site management pages
 │   └── globals.css       # Global styles
 ├── components/           # React components
