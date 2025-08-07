@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react'
 import { AdminLayout } from '@/components/layout/admin-layout'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -13,7 +15,8 @@ import {
   Eye,
   Users,
   FileText,
-  HardDrive
+  HardDrive,
+  ExternalLink
 } from 'lucide-react'
 
 // Mock data for demonstration
@@ -21,42 +24,30 @@ const mockSites = [
   {
     id: 1,
     name: 'Corporate Intranet',
-    description: 'Main company intranet portal',
+    url: 'corporate.company.com',
     status: 'active',
-    userCount: 150,
-    pageCount: 45,
-    storageUsed: '2.4 GB',
-    lastActivity: '2 hours ago'
+    thumbnail: '/api/placeholder/300/200/3161D1/FFFFFF?text=Corporate'
   },
   {
     id: 2,
     name: 'HR Portal',
-    description: 'Human resources and employee portal',
+    url: 'hr.company.com',
     status: 'active',
-    userCount: 75,
-    pageCount: 23,
-    storageUsed: '1.8 GB',
-    lastActivity: '1 day ago'
+    thumbnail: '/api/placeholder/300/200/5774A8/FFFFFF?text=HR+Portal'
   },
   {
     id: 3,
     name: 'Marketing Site',
-    description: 'Marketing team collaboration site',
+    url: 'marketing.company.com',
     status: 'active',
-    userCount: 25,
-    pageCount: 12,
-    storageUsed: '0.9 GB',
-    lastActivity: '3 days ago'
+    thumbnail: '/api/placeholder/300/200/E7F5FF/3161D1?text=Marketing'
   },
   {
     id: 4,
     name: 'Development Hub',
-    description: 'Software development team workspace',
+    url: 'dev.company.com',
     status: 'inactive',
-    userCount: 12,
-    pageCount: 8,
-    storageUsed: '0.5 GB',
-    lastActivity: '1 week ago'
+    thumbnail: '/api/placeholder/300/200/607CAD/FFFFFF?text=Dev+Hub'
   }
 ]
 
@@ -72,10 +63,6 @@ export default function AdminSitesPage() {
               Manage all sites across your organization
             </p>
           </div>
-          <Button size="lg" className="px-8 py-4 text-base">
-            <Plus className="mr-4 h-5 w-5" />
-            Create New Site
-          </Button>
         </div>
 
         {/* Stats Overview */}
@@ -157,70 +144,85 @@ export default function AdminSitesPage() {
           </CardContent>
         </Card>
 
-        {/* Sites Table */}
-        <Card className="shadow-sm">
-          <CardHeader className="pb-6">
-            <CardTitle className="text-2xl font-bold">All Sites</CardTitle>
-            <CardDescription className="text-base">
-              A comprehensive list of all sites in your organization
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-gray-200">
-                    <th className="text-left py-4 px-6 font-semibold text-gray-900 text-sm">Site Name</th>
-                    <th className="text-left py-4 px-6 font-semibold text-gray-900 text-sm">Status</th>
-                    <th className="text-left py-4 px-6 font-semibold text-gray-900 text-sm">Users</th>
-                    <th className="text-left py-4 px-6 font-semibold text-gray-900 text-sm">Pages</th>
-                    <th className="text-left py-4 px-6 font-semibold text-gray-900 text-sm">Storage</th>
-                    <th className="text-left py-4 px-6 font-semibold text-gray-900 text-sm">Last Activity</th>
-                    <th className="text-right py-4 px-6 font-semibold text-gray-900 text-sm">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {mockSites.map((site) => (
-                    <tr key={site.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors duration-150">
-                      <td className="py-5 px-6">
-                        <div>
-                          <div className="font-semibold text-gray-900 text-sm">{site.name}</div>
-                          <div className="text-xs text-gray-500 mt-1">{site.description}</div>
-                        </div>
-                      </td>
-                      <td className="py-5 px-6">
-                        <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
-                          site.status === 'active' 
-                            ? 'bg-green-100 text-green-800'
-                            : 'bg-gray-100 text-gray-800'
-                        }`}>
-                          {site.status}
-                        </span>
-                      </td>
-                      <td className="py-5 px-6 text-sm text-gray-900">{site.userCount}</td>
-                      <td className="py-5 px-6 text-sm text-gray-900">{site.pageCount}</td>
-                      <td className="py-5 px-6 text-sm text-gray-900">{site.storageUsed}</td>
-                      <td className="py-5 px-6 text-xs text-gray-500">{site.lastActivity}</td>
-                      <td className="py-5 px-6">
-                        <div className="flex items-center justify-end space-x-2">
-                          <Button variant="ghost" size="sm" className="h-10 w-10 p-0">
-                            <Eye className="h-4 w-4" />
-                          </Button>
-                          <Button variant="ghost" size="sm" className="h-10 w-10 p-0">
-                            <Edit className="h-4 w-4" />
-                          </Button>
-                          <Button variant="ghost" size="sm" className="h-10 w-10 p-0 text-red-600 hover:text-red-700 hover:bg-red-50">
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </CardContent>
-        </Card>
+        {/* Sites Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {/* Create New Site Card - First Item */}
+          <Card className="hover:shadow-lg transition-all duration-200 cursor-pointer border-2 border-dashed border-gray-300 hover:border-blue-400 hover:bg-blue-50">
+            <CardContent className="p-6 h-64 flex flex-col items-center justify-center text-center">
+              <div className="p-3 bg-blue-100 rounded-full mb-3">
+                <Plus className="h-6 w-6 text-blue-600" />
+              </div>
+              <h3 className="text-base font-semibold text-gray-900 mb-2">Create New Site</h3>
+              <p className="text-xs text-gray-600">
+                Start building a new site for your organization
+              </p>
+            </CardContent>
+          </Card>
+
+          {/* Site Cards */}
+          {mockSites.map((site) => (
+            <Card key={site.id} className="hover:shadow-lg transition-all duration-200 cursor-pointer overflow-hidden">
+              {/* Thumbnail Image */}
+              <div className="relative h-32 bg-gray-100">
+                <img 
+                  src={site.thumbnail} 
+                  alt={`${site.name} thumbnail`}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    // Fallback to a colored background if image fails to load
+                    e.currentTarget.style.display = 'none';
+                    e.currentTarget.parentElement!.style.backgroundColor = '#3161D1';
+                  }}
+                />
+                {/* Status Badge Overlay */}
+                <div className="absolute top-2 right-2">
+                  <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
+                    site.status === 'active' 
+                      ? 'bg-green-100 text-green-800'
+                      : 'bg-gray-100 text-gray-800'
+                  }`}>
+                    {site.status}
+                  </span>
+                </div>
+              </div>
+
+              <CardContent className="p-4 h-32 flex flex-col">
+                {/* Header with Menu */}
+                <div className="flex items-start justify-between mb-2">
+                  <div className="flex-1 min-w-0 pr-2">
+                    <h3 className="text-sm font-semibold text-gray-900 mb-1 truncate">{site.name}</h3>
+                  </div>
+                  <Button variant="ghost" size="sm" className="h-6 w-6 p-0 flex-shrink-0">
+                    <MoreHorizontal className="h-3 w-3" />
+                  </Button>
+                </div>
+
+                {/* Site URL */}
+                <div className="flex-1 flex items-center mb-3">
+                  <div className="flex items-center space-x-2 text-xs text-gray-600 w-full">
+                    <ExternalLink className="h-3 w-3 text-gray-400 flex-shrink-0" />
+                    <span className="truncate">{site.url}</span>
+                  </div>
+                </div>
+
+                {/* Footer Actions */}
+                <div className="pt-2 border-t border-gray-100">
+                  <div className="flex items-center justify-end space-x-1">
+                    <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
+                      <Eye className="h-3 w-3" />
+                    </Button>
+                    <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
+                      <Edit className="h-3 w-3" />
+                    </Button>
+                    <Button variant="ghost" size="sm" className="h-6 w-6 p-0 text-red-600 hover:text-red-700 hover:bg-red-50">
+                      <Trash2 className="h-3 w-3" />
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
       </div>
     </AdminLayout>
   )
