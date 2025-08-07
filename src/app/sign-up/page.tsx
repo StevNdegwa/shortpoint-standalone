@@ -22,7 +22,7 @@ export default function SignUpPage() {
 
       {/* Main Content */}
       <div className="flex-1 flex items-center justify-center px-4 py-12">
-        <div className="w-full max-w-md">
+        <div className="w-full max-w-md mx-auto flex-1 flex items-center justify-center flex-col">
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
               Create your account
@@ -32,7 +32,7 @@ export default function SignUpPage() {
             </p>
           </div>
           
-          <div className="bg-white rounded-lg shadow-lg p-8 border border-gray-200">
+          <div className="bg-white rounded-lg p-6 border border-gray-200 max-w-[400px] mx-auto">
             <SignUp 
               appearance={{
                 elements: {
