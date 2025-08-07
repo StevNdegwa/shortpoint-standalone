@@ -14,6 +14,9 @@ export default function LandingPage() {
             <span className="text-xl font-semibold text-gray-900">ShortPoint</span>
           </div>
           <div className="flex items-center space-x-4">
+            <Link href="/admin">
+              <Button variant="ghost">Admin Dashboard</Button>
+            </Link>
             <Link href="/sign-in">
               <Button variant="ghost">Sign In</Button>
             </Link>
