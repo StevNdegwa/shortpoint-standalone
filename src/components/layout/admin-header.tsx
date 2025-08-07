@@ -1,6 +1,7 @@
 import React from 'react'
-import { Bell, Search, User } from 'lucide-react'
+import { Bell, Search } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { UserDropdownMenu } from './user-dropdown-menu'
 
 export function AdminHeader() {
   return (
