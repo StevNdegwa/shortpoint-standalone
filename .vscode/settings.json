@@ -1,3 +1,7 @@
 {
-    "cursor.ai.customPrompt": "You are a Next.js expert. Always suggest modern React patterns and TypeScript best practices."
+    "cursor.ai.customPrompt": "You are a Next.js expert. Always suggest modern React patterns and TypeScript best practices.",
+    "editor.acceptSuggestionOnEnter": "on",
+    "editor.acceptSuggestionOnCommitCharacter": true,
+    "cursor.ai.autoApply": true,  // if available
+    "editor.tabCompletion": "on"
 }
