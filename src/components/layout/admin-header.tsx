@@ -34,15 +34,7 @@ export function AdminHeader() {
           </Button>
 
           {/* User Profile */}
-          <div className="flex items-center space-x-4 pl-6 border-l border-gray-200">
-            <div className="text-right">
-              <p className="text-sm font-semibold text-gray-900">Admin User</p>
-              <p className="text-xs text-gray-500">admin@company.com</p>
-            </div>
-            <Button variant="ghost" size="icon" className="h-12 w-12 rounded-full bg-blue-100 hover:bg-blue-200">
-              <User className="h-5 w-5 text-blue-700" />
-            </Button>
-          </div>
+          <UserDropdownMenu />
         </div>
       </div>
     </header>
