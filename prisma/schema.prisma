@@ -1,0 +1,221 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Company {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  industry  String?
+  website   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tenants Tenant[]
+
+  @@map("companies")
+}
+
+model Tenant {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  companyId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  company   Company           @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  users     User[]
+  sites     Site[]
+  pages     Page[]
+  assets    Asset[]
+  navigation Navigation[]
+  themes    Theme[]
+  licenses  TenantLicense[]
+
+  @@map("tenants")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  clerkId   String   @unique
+  email     String   @unique
+  role      UserRole @default(NORMAL)
+  tenantId  String
+  createdAt DateTime @default(now())
+
+  tenant     Tenant      @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  sites      SiteUser[]
+  pages      Page[]
+  pageVersions PageVersion[]
+  assets     Asset[]
+
+  @@map("users")
+}
+
+model Site {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String
+  description String?
+  tenantId    String
+  createdBy   String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  tenant      Tenant      @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  creator     User        @relation(fields: [createdBy], references: [id])
+  pages       Page[]
+  assets      Asset[]
+  navigation  Navigation?
+  theme       Theme?
+  siteUsers   SiteUser[]
+
+  @@unique([tenantId, slug])
+  @@map("sites")
+}
+
+model Page {
+  id        String      @id @default(cuid())
+  title     String
+  slug      String
+  content   Json
+  status    PageStatus  @default(DRAFT)
+  siteId    String
+  tenantId  String
+  createdBy String
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  site        Site          @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  tenant      Tenant        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  creator     User          @relation(fields: [createdBy], references: [id])
+  versions    PageVersion[]
+
+  @@unique([siteId, slug])
+  @@map("pages")
+}
+
+model PageVersion {
+  id            String      @id @default(cuid())
+  pageId        String
+  versionNumber Int
+  title         String
+  content       Json
+  status        PageStatus
+  createdBy     String
+  createdAt     DateTime    @default(now())
+  isCurrent     Boolean     @default(false)
+
+  page    Page @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  creator User @relation(fields: [createdBy], references: [id])
+
+  @@map("page_versions")
+}
+
+model Navigation {
+  id        String   @id @default(cuid())
+  siteId    String   @unique
+  tenantId  String
+  structure Json
+  updatedAt DateTime @updatedAt
+
+  site   Site   @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@map("navigation")
+}
+
+model Asset {
+  id         String   @id @default(cuid())
+  name       String
+  filePath   String
+  fileType   String
+  fileSize   Int
+  siteId     String
+  tenantId   String
+  uploadedBy String
+  createdAt  DateTime @default(now())
+
+  site      Site   @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  tenant    Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  uploader  User   @relation(fields: [uploadedBy], references: [id])
+
+  @@map("assets")
+}
+
+model Theme {
+  id             String   @id @default(cuid())
+  siteId         String   @unique
+  tenantId       String
+  primaryColor   String   @default("#3161D1")
+  secondaryColor String   @default("#5774A8")
+  customCss      String?
+  updatedAt      DateTime @updatedAt
+
+  site   Site   @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@map("themes")
+}
+
+model TenantLicense {
+  id            String        @id @default(cuid())
+  tenantId      String
+  licenseType   LicenseType   @default(BASIC)
+  maxSites      Int           @default(5)
+  maxUsers      Int           @default(10)
+  maxStorageGb  Int           @default(1)
+  startDate     DateTime
+  endDate       DateTime
+  isActive      Boolean       @default(true)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@map("tenant_licenses")
+}
+
+model SiteUser {
+  siteId   String
+  userId   String
+  role     SiteUserRole @default(MEMBER)
+  createdAt DateTime    @default(now())
+
+  site Site @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([siteId, userId])
+  @@map("site_users")
+}
+
+enum UserRole {
+  ADMIN
+  NORMAL
+}
+
+enum PageStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum LicenseType {
+  BASIC
+  PREMIUM
+  ENTERPRISE
+}
+
+enum SiteUserRole {
+  ADMIN
+  MEMBER
+} 
