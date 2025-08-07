@@ -15,34 +15,29 @@ import {
 
 const adminNavItems = [
   { 
-    href: '/admin/sites', 
+    href: '/admin', 
     label: 'Sites',
-    icon: Building2,
-    description: 'Manage all sites'
+    icon: Building2
   },
   { 
     href: '/admin/licensing', 
     label: 'Licensing', 
-    icon: CreditCard,
-    description: 'License management'
+    icon: CreditCard
   },
   { 
     href: '/admin/users', 
     label: 'Users', 
-    icon: Users,
-    description: 'User management'
+    icon: Users
   },
   { 
     href: '/admin/support', 
     label: 'Support', 
-    icon: HelpCircle,
-    description: 'Support tickets'
+    icon: HelpCircle
   },
   { 
     href: '/admin/settings', 
     label: 'Tenant Settings', 
-    icon: Settings,
-    description: 'System configuration'
+    icon: Settings
   },
 ]
 
@@ -56,9 +51,7 @@ export function AdminSidebar() {
           {adminNavItems.map((item) => {
             const Icon = item.icon
             // More specific active detection
-            const isActive = pathname === item.href || 
-                           (item.href === '/admin/sites' && pathname === '/admin') ||
-                           pathname.startsWith(item.href + '/')
+            const isActive = pathname === item.href
 
             return (
               <Link
@@ -82,12 +75,6 @@ export function AdminSidebar() {
                 </div>
                 <div className="flex-1">
                   <div className="font-semibold text-base">{item.label}</div>
-                  <div className={cn(
-                    "text-xs mt-1",
-                    isActive ? "text-blue-600" : "text-gray-500"
-                  )}>
-                    {item.description}
-                  </div>
                 </div>
               </Link>
             )
