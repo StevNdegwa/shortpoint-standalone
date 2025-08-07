@@ -1,0 +1,27 @@
+# Cursor Rules for Next.js Project
+
+## Code Style
+- Use TypeScript for all new files
+- Use Tailwind CSS for styling
+- Prefer functional components over class components
+- Use const assertions for better type inference
+
+## Naming Conventions
+- Use camelCase for variables and functions
+- Use PascalCase for components and types
+- Use kebab-case for file names
+
+## Component Creating rules
+- Always create component in `components/` folder with separated files.
+- Always add unit tests
+
+## Best Practices
+- Always add error handling for API calls
+- Use React Query for data fetching
+- Implement proper loading states
+- Add TypeScript interfaces for all props
+
+## AI Instructions
+- Always explain complex code changes
+- Suggest performance optimizations when relevant
+- Prioritize accessibility in UI components
