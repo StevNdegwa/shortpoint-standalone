@@ -25,19 +25,14 @@ const adminNavItems = [
     icon: CreditCard
   },
   { 
-    href: '/admin/users', 
-    label: 'Users', 
-    icon: Users
+    href: '/admin/settings', 
+    label: 'Tenant Settings', 
+    icon: Settings
   },
   { 
     href: '/admin/support', 
     label: 'Support', 
     icon: HelpCircle
-  },
-  { 
-    href: '/admin/settings', 
-    label: 'Tenant Settings', 
-    icon: Settings
   },
 ]
 
