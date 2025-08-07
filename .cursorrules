@@ -12,8 +12,11 @@
 - Use kebab-case for file names
 
 ## Component Creating rules
-- Always create component in `components/` folder with separated files.
+- Always create component in `components/` folder with separated files and into the separated folder like `UserDropdownMenu/UserDropdownMenu.component.tsx`.
+- do not add useless comment line
 - Always add unit tests
+- Always add scss file for the component and include it
+- add component class name to the element classes
 
 ## Best Practices
 - Always add error handling for API calls
